@@ -1,5 +1,8 @@
 # Aire Engine
 
+## About
+A simple rendering engine to learn more about low level programming and 3D graphics.
+
 ## Operating System
 - Linux (Ubuntu)
 
