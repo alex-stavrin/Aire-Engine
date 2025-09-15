@@ -26,49 +26,51 @@ Camera mainCamera = Camera(glm::vec3(0.0f,0.0f,3.0f), -90.0f, 0.0f);
 
 // triangle vertices in NDC (Normalized Device Coordinates x,y,z in [-1,1])
 // (0,0,0) is center of screen
+// pos            // normal           // uv
 float vertices[] = {
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
-     0.5f, -0.5f, -0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 0.0f,
+    -0.5f,-0.5f,-0.5f,  0.0f,0.0f,-1.0f,  0.0f,0.0f,
+    0.5f,-0.5f,-0.5f,  0.0f,0.0f,-1.0f,  1.0f,0.0f,
+    0.5f, 0.5f,-0.5f,  0.0f,0.0f,-1.0f,  1.0f,1.0f,
+    0.5f, 0.5f,-0.5f,  0.0f,0.0f,-1.0f,  1.0f,1.0f,
+    -0.5f, 0.5f,-0.5f,  0.0f,0.0f,-1.0f,  0.0f,1.0f,
+    -0.5f,-0.5f,-0.5f,  0.0f,0.0f,-1.0f,  0.0f,0.0f,
 
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 1.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
+    -0.5f,-0.5f, 0.5f,  0.0f,0.0f, 1.0f,  0.0f,0.0f,
+    0.5f,-0.5f, 0.5f,  0.0f,0.0f, 1.0f,  1.0f,0.0f,
+    0.5f, 0.5f, 0.5f,  0.0f,0.0f, 1.0f,  1.0f,1.0f,
+    0.5f, 0.5f, 0.5f,  0.0f,0.0f, 1.0f,  1.0f,1.0f,
+    -0.5f, 0.5f, 0.5f,  0.0f,0.0f, 1.0f,  0.0f,1.0f,
+    -0.5f,-0.5f, 0.5f,  0.0f,0.0f, 1.0f,  0.0f,0.0f,
 
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    -0.5f, 0.5f, 0.5f, -1.0f,0.0f,0.0f,  0.0f,0.0f,
+    -0.5f, 0.5f,-0.5f, -1.0f,0.0f,0.0f,  1.0f,0.0f,
+    -0.5f,-0.5f,-0.5f, -1.0f,0.0f,0.0f,  1.0f,1.0f,
+    -0.5f,-0.5f,-0.5f, -1.0f,0.0f,0.0f,  1.0f,1.0f,
+    -0.5f,-0.5f, 0.5f, -1.0f,0.0f,0.0f,  0.0f,1.0f,
+    -0.5f, 0.5f, 0.5f, -1.0f,0.0f,0.0f,  0.0f,0.0f,
 
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
+    0.5f, 0.5f, 0.5f,  1.0f,0.0f,0.0f,  0.0f,0.0f,
+    0.5f, 0.5f,-0.5f,  1.0f,0.0f,0.0f,  1.0f,0.0f,
+    0.5f,-0.5f,-0.5f,  1.0f,0.0f,0.0f,  1.0f,1.0f,
+    0.5f,-0.5f,-0.5f,  1.0f,0.0f,0.0f,  1.0f,1.0f,
+    0.5f,-0.5f, 0.5f,  1.0f,0.0f,0.0f,  0.0f,1.0f,
+    0.5f, 0.5f, 0.5f,  1.0f,0.0f,0.0f,  0.0f,0.0f,
 
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f, -0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f, -0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f, -0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f, -0.5f, -0.5f,  0.0f, 1.0f,
+    -0.5f,-0.5f,-0.5f,  0.0f,-1.0f,0.0f,  0.0f,0.0f,
+    0.5f,-0.5f,-0.5f,  0.0f,-1.0f,0.0f,  1.0f,0.0f,
+    0.5f,-0.5f, 0.5f,  0.0f,-1.0f,0.0f,  1.0f,1.0f,
+    0.5f,-0.5f, 0.5f,  0.0f,-1.0f,0.0f,  1.0f,1.0f,
+    -0.5f,-0.5f, 0.5f,  0.0f,-1.0f,0.0f,  0.0f,1.0f,
+    -0.5f,-0.5f,-0.5f,  0.0f,-1.0f,0.0f,  0.0f,0.0f,
 
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f,
-     0.5f,  0.5f, -0.5f,  1.0f, 1.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-     0.5f,  0.5f,  0.5f,  1.0f, 0.0f,
-    -0.5f,  0.5f,  0.5f,  0.0f, 0.0f,
-    -0.5f,  0.5f, -0.5f,  0.0f, 1.0f
+    -0.5f, 0.5f,-0.5f,  0.0f, 1.0f,0.0f,  0.0f,0.0f,
+    0.5f, 0.5f,-0.5f,  0.0f, 1.0f,0.0f,  1.0f,0.0f,
+    0.5f, 0.5f, 0.5f,  0.0f, 1.0f,0.0f,  1.0f,1.0f,
+    0.5f, 0.5f, 0.5f,  0.0f, 1.0f,0.0f,  1.0f,1.0f,
+    -0.5f, 0.5f, 0.5f,  0.0f, 1.0f,0.0f,  0.0f,1.0f,
+    -0.5f, 0.5f,-0.5f,  0.0f, 1.0f,0.0f,  0.0f,0.0f,
 };
+
 
 // vertices for a square pyramid (base size 1, height 1)
 float pyramidVertices[] = {
@@ -276,10 +278,12 @@ int main()
     glBindVertexArray(vertexArrayObject);
 
     // Vertex array attributes
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
-    glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
+    glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)(6 * sizeof(float)));
+    glEnableVertexAttribArray(2);
 
 
     // vertex array for light
