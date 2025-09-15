@@ -1,34 +1,28 @@
 #include <iostream>
-#include "../include/glad/glad.h"
+#include "glad.h"
 #include "GLFW/glfw3.h"
-#include "../include/Shader.h"
-#include "../include/stb_image.h"
+#include "Shader.h"
+#include "stb_image.h"
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
-#include "../include/imgui.h"
-#include "../include/imgui_impl_glfw.h"
-#include "../include/imgui_impl_opengl3.h"
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+#include "Camera.h"
+#include "GameTime.h"
 
 const unsigned windowWidth = 1920;
 const unsigned windowHeight =  1080;
 
-glm::vec3 cameraPos = glm::vec3(0.0f,1.0f,3.0f);
 glm::mat4 projection = glm::mat4(1.0f);
-glm::vec3 cameraUp = glm::vec3(0.0f,1.0f,0.0f);
-glm::vec3 cameraForward = glm::vec3(0.0f,0.0f,-1.0f);
-glm::vec3 cameraRight;
-float cameraPitch = 0.0f;
-float cameraYaw = -90.0f;
 float lastMouseX = windowWidth / 2.0f;
 float lastMouseY = windowHeight / 2.0f;
 
-const float cameraSpeed = 2;
-const float mouseSensitivity = 0.1f;
-const bool invertMouseY = true;
-
 float deltaTime = 0.0; // time between current and last frame
 float lastFrame = 0.0; // marks the last frame
+
+Camera mainCamera = Camera(glm::vec3(0.0f,0.0f,3.0f), -90.0f, 0.0f);
 
 // triangle vertices in NDC (Normalized Device Coordinates x,y,z in [-1,1])
 // (0,0,0) is center of screen
@@ -135,17 +129,7 @@ void mouseCallback(GLFWwindow* window, double xPos, double yPos)
     lastMouseX = xPos;
     lastMouseY = yPos;
 
-    cameraYaw += xOffset * mouseSensitivity;
-    cameraPitch += yOffset * mouseSensitivity * (invertMouseY ? -1 : 1);
-
-    if(cameraPitch > 89.0f) cameraPitch = 89.0f;
-    if(cameraPitch < -89.0f) cameraPitch = -89.0f;
-
-    glm::vec3 newCameraForward;
-    newCameraForward.x = cos(glm::radians(cameraYaw)) * cos(glm::radians(cameraPitch));
-    newCameraForward.y = sin(glm::radians(cameraPitch));
-    newCameraForward.z = sin(glm::radians(cameraYaw)) * cos(glm::radians(cameraPitch));
-    cameraForward = glm::normalize(newCameraForward);
+    mainCamera.cameraMouseInput(xOffset, yOffset);
 }
 
 void handleInput(GLFWwindow* window)
@@ -176,19 +160,18 @@ void handleInput(GLFWwindow* window)
 
     if(glm::length(input) > 0)
     {
-        cameraRight = glm::normalize(glm::cross(cameraForward, cameraUp));
-        glm::vec3 movementDirection = cameraForward * input.y + cameraRight * input.x;
+        glm::vec3 movementDirection = mainCamera.getForward() * input.y + mainCamera.getRight() * input.x;
         movementDirection = glm::normalize(movementDirection);
-        cameraPos += movementDirection * cameraSpeed * deltaTime;
+        mainCamera.moveCamera(movementDirection);
     }
 
-    if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
+    if(glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS)
     {
-        cameraPos += cameraUp * cameraSpeed * deltaTime;
+        mainCamera.moveCamera(glm::vec3(0,-1,0));
     }
-    else if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS)
+    else if(glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS || glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS)
     {
-        cameraPos -= cameraUp * cameraSpeed * deltaTime;
+        mainCamera.moveCamera(glm::vec3(0,1,0));
     }
 }
 
@@ -346,9 +329,7 @@ int main()
         // ImGui::ShowDemoWindow();
 
         // delta time
-        float currentFrame = glfwGetTime();
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+        GameTime::updateDeltaTime();
 
         // INPUT //
         handleInput(window);
@@ -360,7 +341,7 @@ int main()
 
         // make view matrix
         glm::mat4 view = glm::mat4(1.0f);
-        view = glm::lookAt(cameraPos, cameraPos + cameraForward, cameraUp);
+        view = glm::lookAt(mainCamera.getPosition(), mainCamera.getPosition() + mainCamera.getForward(), mainCamera.getUp());
 
         basicShader.setMatrix4("view", view);
         basicShader.setMatrix4("projection", projection);
