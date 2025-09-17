@@ -302,7 +302,7 @@ int main()
 
     Shader basicShader = Shader("./shaders/basic/basic.vert", "./shaders/basic/basic.frag");
     basicShader.setInt("textureData0", 0);
-    basicShader.setVec3("ambientLightColor", glm::vec3(1.0f,1.0f,1.0f));
+    basicShader.setVec3("lightColor", glm::vec3(1.0f,1.0f,1.0f));
 
     Shader lightShader = Shader("./shaders/light/light.vert", "./shaders/light/light.frag");
     lightShader.setVec3("lightColor", glm::vec3(1.0f,1.0f,1.0f));
@@ -318,6 +318,9 @@ int main()
     glm::mat4 lightModel = glm::mat4(1.0f);
     glm::vec3 lightPosition = glm::vec3(0.0f,0.0f, 2.0f);
     lightModel = glm::translate(lightModel, lightPosition);
+
+
+    basicShader.setVec3("lightPosition", lightPosition);
 
     // Game loop
     while (!glfwWindowShouldClose(window))
