@@ -301,8 +301,17 @@ int main()
     glEnableVertexAttribArray(0);
 
     Shader basicShader = Shader("./shaders/basic/basic.vert", "./shaders/basic/basic.frag");
+
     basicShader.setInt("textureData0", 0);
-    basicShader.setVec3("lightColor", glm::vec3(1.0f,1.0f,1.0f));
+
+    basicShader.setVec3("material.ambient", glm::vec3(1.0f,1.0f,1.0f));
+    basicShader.setVec3("material.diffuse", glm::vec3(1.0f, 1.0f, 1.0f));
+    basicShader.setVec3("material.specular", glm::vec3(1.0f,1.0f,1.0f));
+    basicShader.setFloat("material.shininess", 32.0f);
+
+    basicShader.setVec3("light.ambient", glm::vec3(0.3f, 0.3f, 0.3f));
+    basicShader.setVec3("light.diffuse", glm::vec3(0.6f, 0.6f, 0.6f));
+    basicShader.setVec3("light.specular", glm::vec3(0.5f, 0.5f, 0.5f));
 
     Shader lightShader = Shader("./shaders/light/light.vert", "./shaders/light/light.frag");
     lightShader.setVec3("lightColor", glm::vec3(1.0f,1.0f,1.0f));
@@ -319,7 +328,7 @@ int main()
     glm::vec3 lightPosition = glm::vec3(0.0f,0.0f, 2.0f);
     lightModel = glm::translate(lightModel, lightPosition);
 
-    basicShader.setVec3("lightPosition", lightPosition);
+    basicShader.setVec3("light.position", lightPosition);
 
     // Game loop
     while (!glfwWindowShouldClose(window))
