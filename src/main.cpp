@@ -319,7 +319,6 @@ int main()
     glm::vec3 lightPosition = glm::vec3(0.0f,0.0f, 2.0f);
     lightModel = glm::translate(lightModel, lightPosition);
 
-
     basicShader.setVec3("lightPosition", lightPosition);
 
     // Game loop
@@ -352,6 +351,7 @@ int main()
 
         basicShader.setMatrix4("view", view);
         basicShader.setMatrix4("projection", projection);
+        basicShader.setVec3("cameraPosition", mainCamera.getPosition());
 
         lightShader.setMatrix4("view", view);
         lightShader.setMatrix4("projection", projection);
